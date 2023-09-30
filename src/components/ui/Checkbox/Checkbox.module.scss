@@ -1,0 +1,22 @@
+@import "../../../styles/vars";
+
+.label {
+  display: flex;
+  gap: 8px;
+}
+
+.input {
+  position: absolute;
+  appearance: none;
+}
+
+.box {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background-color: $color-accent;
+}
+
+.input:checked + .box {
+  background-image: url("../../../../public/assets/check.svg");
+}
