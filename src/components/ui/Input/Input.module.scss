@@ -1,0 +1,16 @@
+@import "../../../styles/vars";
+
+.input {
+  padding: 16px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: $color-text;
+  background-color: $color-background;
+  outline: 1px solid transparent;
+  transition: outline-color 0.2s ease;
+
+  &:focus-visible {
+    outline-color: $color-accent;
+  }
+}

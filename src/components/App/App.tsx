@@ -1,7 +1,9 @@
-import "./App.module.css";
+import { AccessControl } from '../AccessControl'
 
-const App = () => {
-  return <></>;
-};
-
-export default App;
+export const App = () => {
+  return (
+    <>
+      <AccessControl />
+    </>
+  )
+}
