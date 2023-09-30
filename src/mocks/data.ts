@@ -1,6 +1,6 @@
 import { User } from '../types/user.ts'
 
-export const data: User[] = [
+export const users: User[] = [
   {
     name: 'Андрей Дроздов',
     city: 'Шымкент',

@@ -5,11 +5,6 @@
   gap: 8px;
 }
 
-.input {
-  position: absolute;
-  appearance: none;
-}
-
 .box {
   width: 18px;
   height: 18px;
@@ -17,6 +12,16 @@
   background-color: $color-accent;
 }
 
-.input:checked + .box {
-  background-image: url("../../../../public/assets/check.svg");
+.input {
+  position: absolute;
+  appearance: none;
+
+  &:checked + .box {
+    background-image: url("/assets/check.svg");
+  }
+
+  &:focus-visible + .box {
+    outline: 1px solid $color-text;
+    outline-offset: 4px;
+  }
 }
