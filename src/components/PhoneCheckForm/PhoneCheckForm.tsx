@@ -1,52 +1,69 @@
 import styles from './PhoneCheckForm.module.scss'
-import { ChangeEvent, FormEvent, ReactElement, useState } from 'react'
+import { ChangeEvent, FocusEvent, FormEvent, ReactElement, useState } from 'react'
 import InputMask from 'react-input-mask'
 
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 
 // Data and typings
-import { data } from '../../mocks/data.ts'
 import { User } from '../../types/user.ts'
+import { useAppDispatch } from '../../hooks/hooks.ts'
+import { write } from '../../features/phone-check/phone-check-slice.ts'
+import { users } from '../../mocks/data.ts'
 
 export const PhoneCheckForm = (): ReactElement => {
-  const [phone, setPhone] = useState('')
-  const [password, setPassword] = useState('')
+  const dispatch = useAppDispatch()
+
+  const [data, setData] = useState({
+    phone: '',
+    password: '',
+  })
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const value = target.value
-    setPhone(value)
+    setData({
+      ...data,
+      [target.name]: value,
+    })
   }
 
-  const handlePasswordChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const value = target.value
-    setPassword(value)
+  const handleBlur = ({ target }: FocusEvent<HTMLInputElement>) => {
+    dispatch(
+      write({
+        field: target.name,
+        value: data[target.name as keyof typeof data],
+      })
+    )
   }
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     alert('Вы вошли в систему')
-    setPhone('')
-    setPassword('')
+    setData({
+      phone: '',
+      password: '',
+    })
   }
 
-  const filtered = data.filter((user: User) => user.phone === phone.replace(/[^+\d]/g, ''))
+  const filtered = users.filter((user: User) => user.phone === data.phone.replace(/[^+\d]/g, ''))
 
   const isPhonePresentInDatabase: boolean = filtered.length !== 0
-  const isPhoneNumberValid: boolean = phone.length === 16
-  const isButtonEnabled: boolean = isPhoneNumberValid && isPhonePresentInDatabase && password.length > 0
+  const isPhoneNumberValid: boolean = data.phone.length === 16
+  const isButtonEnabled: boolean = isPhoneNumberValid && isPhonePresentInDatabase && data.password.length > 0
 
   return (
     <>
       <h2 className={styles.title}>Добро пожаловать!</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         <InputMask
+          name="phone"
           className={styles.input}
           type="tel"
           mask="+7 999 999-99-99"
           maskChar=""
           onChange={handleChange}
-          value={phone}
+          onBlur={handleBlur}
+          value={data.phone}
           alwaysShowMask
         />
         {isPhonePresentInDatabase && (
@@ -55,8 +72,9 @@ export const PhoneCheckForm = (): ReactElement => {
             name="password"
             placeholder="Введите пароль..."
             type="password"
-            value={password}
-            onChange={handlePasswordChange}
+            value={data.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
             required
           />
         )}

@@ -6,13 +6,20 @@ import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { Checkbox } from '../ui/Checkbox'
 
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks.ts'
+import { update } from '../../features/registration/registration-slice.ts'
+
 export const SignUpForm = (): ReactElement => {
+  const userData = useAppSelector((state) => state.registration)
+
   const [data, setData] = useState({
     phone: '',
     name: '',
     email: '',
     hasAgreed: false,
   })
+
+  const dispatch = useAppDispatch()
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const value: string | boolean = target.type === 'checkbox' ? target.checked : target.value
@@ -22,11 +29,27 @@ export const SignUpForm = (): ReactElement => {
     })
   }
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const handleBlur = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      update({
+        field: target.name,
+        value: data[target.name as keyof typeof data],
+      })
+    )
   }
 
-  const isButtonEnabled: boolean = Object.keys(data).every((key) => key)
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    alert('Вы успешно зарегистрированы!')
+    setData({
+      phone: '',
+      name: '',
+      email: '',
+      hasAgreed: false,
+    })
+  }
+
+  const isButtonEnabled: boolean = Object.keys(userData).every((key) => userData[key as keyof typeof data])
 
   return (
     <>
@@ -39,6 +62,7 @@ export const SignUpForm = (): ReactElement => {
           mask="+7 999 999-99-99"
           maskChar=""
           onChange={handleChange}
+          onBlur={handleBlur}
           value={data.phone}
           alwaysShowMask
         />
@@ -46,6 +70,7 @@ export const SignUpForm = (): ReactElement => {
           label="Введите имя"
           name="name"
           onChange={handleChange}
+          onBlur={handleBlur}
           placeholder="Имя"
           type="text"
           value={data.name}
@@ -55,6 +80,7 @@ export const SignUpForm = (): ReactElement => {
           label="Введите e-mail"
           name="email"
           onChange={handleChange}
+          onBlur={handleBlur}
           placeholder="E-mail"
           type="email"
           value={data.email}
@@ -65,6 +91,7 @@ export const SignUpForm = (): ReactElement => {
           label="Согласен с обработкой персональных данны"
           checked={data.hasAgreed}
           onChange={handleChange}
+          onBlur={handleBlur}
           required
         />
         <Button text="Зарегистрироваться" type="submit" variant="solid" isDisabled={!isButtonEnabled} />
