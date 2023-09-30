@@ -1,11 +1,11 @@
-import { SignUpForm } from '../SignUpForm'
-import { PhoneCheckForm } from '../PhoneCheckForm'
+import { PasswordRecoveryForm } from '../PasswordRecoveryForm'
 
 export const AccessControl = () => {
   return (
     <>
-      <SignUpForm />
-      <PhoneCheckForm />
+      {/*<SignUpForm />*/}
+      {/*<PhoneCheckForm />*/}
+      <PasswordRecoveryForm />
     </>
   )
 }
