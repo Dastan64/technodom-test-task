@@ -1,27 +1,29 @@
-# React + TypeScript + Vite
+# Тестовое задание на позицию Junior Frontend-разработчика
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Данное тестовое задание представляет собой формы проверки номера, регистрации и восстановления пароля
 
-Currently, two official plugins are available:
+## Стек:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* React;
+* Redux Toolkit;
+* TypeScript;
+* SCSS Modules;
+* Framer Motion (для анимации шагов формы);
+* Vite
 
-## Expanding the ESLint configuration
+## Инструменты разработки:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+* ESLint
+* Prettier
+* Stylelint
 
-- Configure the top-level `parserOptions` property like this:
+## Гайд по запуску проекта
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+`npm install` - установка зависимостей
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+`npm run dev` - запуск проекта в режиме разработки
+
+`npm run build` - сборка проекта
+
+---
+[Деплой проекта](https://dastan64.github.io/technodom-test-task/)
