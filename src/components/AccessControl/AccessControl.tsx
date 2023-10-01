@@ -1,13 +1,22 @@
+import { useState } from 'react'
 import { PasswordRecoveryForm } from '../PasswordRecoveryForm'
 import { SignUpForm } from '../SignUpForm'
 import { PhoneCheckForm } from '../PhoneCheckForm'
 
 export const AccessControl = () => {
+  const [currentStep, setCurrentStep] = useState('phoneCheck')
+
+  const changeCurrentStep = (step: string) => {
+    if (step) {
+      setCurrentStep(step)
+    }
+  }
+
   return (
     <>
-      <SignUpForm />
-      <PhoneCheckForm />
-      <PasswordRecoveryForm />
+      {currentStep === 'phoneCheck' && <PhoneCheckForm onFormChange={changeCurrentStep} />}
+      {currentStep === 'registration' && <SignUpForm />}
+      {currentStep === 'passwordRecovery' && <PasswordRecoveryForm />}
     </>
   )
 }

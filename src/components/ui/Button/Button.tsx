@@ -4,12 +4,19 @@ import { clsx } from 'clsx'
 
 interface ButtonProps {
   isDisabled?: boolean
-  text: string
-  type?: 'button' | 'submit'
+  onClick?: () => void,
+  text: string,
+  type?: 'button' | 'submit',
   variant?: 'solid' | 'transparent'
 }
 
-export const Button = ({ isDisabled = false, text, type = 'button', variant = 'solid' }: ButtonProps): ReactElement => {
+export const Button = ({
+  isDisabled = false,
+  onClick,
+  text,
+  type = 'button',
+  variant = 'solid',
+}: ButtonProps): ReactElement => {
   return (
     <button
       className={clsx(styles.button, {
@@ -17,6 +24,7 @@ export const Button = ({ isDisabled = false, text, type = 'button', variant = 's
         [styles.transparent]: variant === 'transparent',
       })}
       type={type}
+      onClick={onClick}
       disabled={isDisabled}
     >
       {text}

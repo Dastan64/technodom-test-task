@@ -1,17 +1,24 @@
 import styles from './PhoneCheckForm.module.scss'
-import { ChangeEvent, FocusEvent, FormEvent, ReactElement, useState } from 'react'
+import { ChangeEvent, FocusEvent, FormEvent, ReactElement, useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
+import { PhoneInput } from '../PhoneInput'
 
 // Data and typings
 import { User } from '../../types/user.ts'
 import { useAppDispatch } from '../../hooks/hooks.ts'
-import { write } from '../../features/phone-check/phone-check-slice.ts'
 import { users } from '../../mocks/data.ts'
-import { PhoneInput } from '../PhoneInput'
 
-export const PhoneCheckForm = (): ReactElement => {
+import { write } from '../../features/phone-check/phone-check-slice.ts'
+import { variants } from '../../animationData/formAnimation.ts'
+
+interface PhoneCheckFormProps {
+  onFormChange: (step: string) => void
+}
+
+export const PhoneCheckForm = ({ onFormChange }: PhoneCheckFormProps): ReactElement => {
   const dispatch = useAppDispatch()
 
   const [data, setData] = useState({
@@ -45,14 +52,24 @@ export const PhoneCheckForm = (): ReactElement => {
     })
   }
 
-  const filtered = users.filter((user: User) => user.phone === data.phone.replace(/[^+\d]/g, ''))
+  const handleClick = () => {
+    onFormChange('passwordRecovery')
+  }
 
+  const filtered = users.filter((user: User) => user.phone === data.phone.replace(/[^+\d]/g, ''))
   const isPhonePresentInDatabase: boolean = filtered.length !== 0
+
   const isPhoneNumberValid: boolean = data.phone.length === 16
   const isButtonEnabled: boolean = isPhoneNumberValid && isPhonePresentInDatabase && data.password.length > 0
 
+  useEffect(() => {
+    if (isPhoneNumberValid && !isPhonePresentInDatabase) {
+      onFormChange('registration')
+    }
+  }, [isPhoneNumberValid, isPhonePresentInDatabase, onFormChange])
+
   return (
-    <section>
+    <motion.section variants={variants} initial="from" animate="to">
       <h2 className={styles.title}>Добро пожаловать!</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         <PhoneInput
@@ -76,7 +93,8 @@ export const PhoneCheckForm = (): ReactElement => {
           />
         )}
         <Button text="Войти" type="submit" isDisabled={!isButtonEnabled} />
+        <Button text="Забыли пароль?" type="button" variant="transparent" onClick={handleClick} />
       </form>
-    </section>
+    </motion.section>
   )
 }

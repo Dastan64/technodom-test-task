@@ -1,7 +1,11 @@
 import styles from './PasswordRecoveryForm.module.scss'
 import { ChangeEvent, ReactElement, useState } from 'react'
+import { motion } from 'framer-motion'
+
 import { Button } from '../ui/Button'
 import { PhoneInput } from '../PhoneInput'
+
+import { variants } from '../../animationData/formAnimation.ts'
 
 export const PasswordRecoveryForm = (): ReactElement => {
   const [phone, setPhone] = useState('')
@@ -14,7 +18,7 @@ export const PasswordRecoveryForm = (): ReactElement => {
   const isButtonEnabled: boolean = phone.length === 16
 
   return (
-    <section>
+    <motion.section variants={variants} initial="from" animate="to">
       <h2 className={styles.title}>Восстановить пароль</h2>
       <form className={styles.form}>
         <PhoneInput
@@ -27,6 +31,6 @@ export const PasswordRecoveryForm = (): ReactElement => {
         />
         <Button text="Восстановить пароль" type="submit" variant="solid" isDisabled={!isButtonEnabled} />
       </form>
-    </section>
+    </motion.section>
   )
 }
