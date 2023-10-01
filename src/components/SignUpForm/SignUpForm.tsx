@@ -51,7 +51,7 @@ export const SignUpForm = (): ReactElement => {
     })
   }
 
-  const isButtonEnabled: boolean = Object.keys(userData).every((key) => userData[key as keyof typeof data])
+  const isButtonEnabled: boolean = Object.keys(userData).every((key) => userData[key as keyof typeof userData])
 
   return (
     <motion.section variants={variants} initial="from" animate="to">
@@ -62,6 +62,7 @@ export const SignUpForm = (): ReactElement => {
           mask="+7 999 999-99-99"
           maskChar=""
           onChange={handleChange}
+          onBlur={handleBlur}
           value={data.phone}
           alwaysShowMask
         />

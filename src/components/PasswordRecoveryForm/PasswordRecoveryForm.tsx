@@ -1,5 +1,5 @@
 import styles from './PasswordRecoveryForm.module.scss'
-import { ChangeEvent, ReactElement, useState } from 'react'
+import { ChangeEvent, FormEvent, ReactElement, useState } from 'react'
 import { motion } from 'framer-motion'
 
 import { Button } from '../ui/Button'
@@ -15,12 +15,18 @@ export const PasswordRecoveryForm = (): ReactElement => {
     setPhone(value)
   }
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    alert('SMS с временным паролем было отправлено на указанный номер телефона')
+    setPhone('')
+  }
+
   const isButtonEnabled: boolean = phone.length === 16
 
   return (
     <motion.section variants={variants} initial="from" animate="to">
       <h2 className={styles.title}>Восстановить пароль</h2>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <PhoneInput
           name="phone"
           mask="+7 999 999-99-99"
