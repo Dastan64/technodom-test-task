@@ -1,6 +1,5 @@
 import styles from './PhoneCheckForm.module.scss'
 import { ChangeEvent, FocusEvent, FormEvent, ReactElement, useState } from 'react'
-import InputMask from 'react-input-mask'
 
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
@@ -10,6 +9,7 @@ import { User } from '../../types/user.ts'
 import { useAppDispatch } from '../../hooks/hooks.ts'
 import { write } from '../../features/phone-check/phone-check-slice.ts'
 import { users } from '../../mocks/data.ts'
+import { PhoneInput } from '../PhoneInput'
 
 export const PhoneCheckForm = (): ReactElement => {
   const dispatch = useAppDispatch()
@@ -52,17 +52,14 @@ export const PhoneCheckForm = (): ReactElement => {
   const isButtonEnabled: boolean = isPhoneNumberValid && isPhonePresentInDatabase && data.password.length > 0
 
   return (
-    <>
+    <section>
       <h2 className={styles.title}>Добро пожаловать!</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <InputMask
+        <PhoneInput
           name="phone"
-          className={styles.input}
-          type="tel"
           mask="+7 999 999-99-99"
           maskChar=""
           onChange={handleChange}
-          onBlur={handleBlur}
           value={data.phone}
           alwaysShowMask
         />
@@ -80,6 +77,6 @@ export const PhoneCheckForm = (): ReactElement => {
         )}
         <Button text="Войти" type="submit" isDisabled={!isButtonEnabled} />
       </form>
-    </>
+    </section>
   )
 }

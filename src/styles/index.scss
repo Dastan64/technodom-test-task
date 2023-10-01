@@ -16,7 +16,8 @@
 
 body {
   color: $color-text;
-  background-color: $color-page-background;
+  background-image: url("/assets/background.jfif");
+  background-size: cover;
 }
 
 a {
@@ -28,13 +29,14 @@ button, input {
 }
 
 #root {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   max-width: 1440px;
-  min-height: 100vh;
   margin: 0 auto;
   padding: 16px;
+
+  section {
+    padding: 48px 56px;
+    border-radius: 16px;
+    background-color: $color-form-background;
+  }
 }
 

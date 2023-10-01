@@ -1,7 +1,7 @@
 import styles from './PasswordRecoveryForm.module.scss'
 import { ChangeEvent, ReactElement, useState } from 'react'
-import InputMask from 'react-input-mask'
 import { Button } from '../ui/Button'
+import { PhoneInput } from '../PhoneInput'
 
 export const PasswordRecoveryForm = (): ReactElement => {
   const [phone, setPhone] = useState('')
@@ -17,9 +17,7 @@ export const PasswordRecoveryForm = (): ReactElement => {
     <section>
       <h2 className={styles.title}>Восстановить пароль</h2>
       <form className={styles.form}>
-        <InputMask
-          className={styles.input}
-          type="tel"
+        <PhoneInput
           name="phone"
           mask="+7 999 999-99-99"
           maskChar=""
