@@ -1,5 +1,6 @@
 import styles from './SignUpForm.module.scss'
 import { ChangeEvent, FormEvent, ReactElement, useState } from 'react'
+import { motion } from 'framer-motion'
 
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
@@ -8,6 +9,7 @@ import { Checkbox } from '../ui/Checkbox'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks.ts'
 import { update } from '../../features/registration/registration-slice.ts'
 import { PhoneInput } from '../PhoneInput'
+import { variants } from '../../animationData/formAnimation.ts'
 
 export const SignUpForm = (): ReactElement => {
   const userData = useAppSelector((state) => state.registration)
@@ -52,7 +54,7 @@ export const SignUpForm = (): ReactElement => {
   const isButtonEnabled: boolean = Object.keys(userData).every((key) => userData[key as keyof typeof data])
 
   return (
-    <section>
+    <motion.section variants={variants} initial="from" animate="to">
       <h2 className={styles.title}>Регистрация</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         <PhoneInput
@@ -93,6 +95,6 @@ export const SignUpForm = (): ReactElement => {
         />
         <Button text="Зарегистрироваться" type="submit" variant="solid" isDisabled={!isButtonEnabled} />
       </form>
-    </section>
+    </motion.section>
   )
 }
