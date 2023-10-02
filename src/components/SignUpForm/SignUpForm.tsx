@@ -6,7 +6,7 @@ import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { Checkbox } from '../ui/Checkbox'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks.ts'
+import { useAppDispatch } from '../../hooks/hooks.ts'
 import { update } from '../../features/registration/registration-slice.ts'
 import { PhoneInput } from '../PhoneInput'
 import { variants } from '../../animationData/formAnimation.ts'
@@ -16,7 +16,6 @@ interface SignUpFormProps {
 }
 
 export const SignUpForm = ({ onFormChange }: SignUpFormProps): ReactElement => {
-  const userData = useAppSelector((state) => state.registration)
   const dispatch = useAppDispatch()
 
   const [data, setData] = useState({
@@ -35,21 +34,10 @@ export const SignUpForm = ({ onFormChange }: SignUpFormProps): ReactElement => {
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { checked, name, type, value } = target
-    let error = ''
     const fieldValue: string | boolean = type === 'checkbox' ? checked : value
     setData({
       ...data,
       [name]: fieldValue,
-    })
-
-    if (name === 'email') {
-      if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value)) {
-        error = 'Некорректный адрес электронной почты'
-      }
-    }
-    setErrors({
-      ...errors,
-      [name]: error,
     })
   }
 
@@ -57,12 +45,21 @@ export const SignUpForm = ({ onFormChange }: SignUpFormProps): ReactElement => {
     const { name, value } = target
     let error = ''
 
-    if (name === 'name') {
+    if (name === 'phone') {
+      console.log(value.length)
+      if (value.length < 16) {
+        error = 'Введите номер телефона полностью'
+      }
+    } else if (name === 'name') {
       if (value.length < 3) {
         error = 'Имя должно состоять более чем из 2 букв'
       }
       if (/\d/.test(value)) {
         error = 'Имя не может содержать цифры'
+      }
+    } else if (name === 'email') {
+      if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value)) {
+        error = 'Некорректный адрес электронной почты'
       }
     }
 
@@ -91,21 +88,25 @@ export const SignUpForm = ({ onFormChange }: SignUpFormProps): ReactElement => {
     onFormChange('phoneCheck')
   }
 
-  const isButtonEnabled: boolean = Object.keys(userData).every((key) => userData[key as keyof typeof userData])
+  const hasErrors = Object.values(errors).some((error) => error !== '')
+  const isButtonEnabled: boolean = Object.values(data).every((value) => value) && !hasErrors
 
   return (
     <motion.section variants={variants} initial="from" animate="to">
       <h2 className={styles.title}>Регистрация</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <PhoneInput
-          name="phone"
-          mask="+7 999 999-99-99"
-          maskChar=""
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={data.phone}
-          alwaysShowMask
-        />
+        <div className={styles.container}>
+          <PhoneInput
+            name="phone"
+            mask="+7 999 999-99-99"
+            maskChar=""
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={data.phone}
+            alwaysShowMask
+          />
+          {errors.phone && <span className={styles.error}>{errors.phone}</span>}
+        </div>
         <div className={styles.container}>
           <Input
             label="Введите имя"
