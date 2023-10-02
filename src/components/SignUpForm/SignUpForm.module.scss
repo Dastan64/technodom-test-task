@@ -13,17 +13,13 @@
   gap: 24px;
 }
 
-.input {
-  padding: 16px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: $color-text;
-  background-color: $color-background;
-  outline: 1px solid transparent;
-  transition: outline-color 0.2s ease;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  &:focus-visible {
-    outline-color: $color-accent;
-  }
+.error {
+  font-size: 0.875rem;
+  color: $color-error;
 }

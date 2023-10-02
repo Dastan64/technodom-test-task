@@ -12,21 +12,19 @@ interface CheckboxProps {
 
 export const Checkbox = ({ checked, label, name, onBlur, onChange, required }: CheckboxProps): ReactElement => {
   return (
-    <>
-      <label className={styles.label}>
-        <input
-          type="checkbox"
-          name={name}
-          className={styles.input}
-          checked={checked}
-          aria-label={label}
-          required={required}
-          onChange={onChange}
-          onBlur={onBlur}
-        />
-        <span className={styles.box}></span>
-        <span className={styles.caption}>Согласен с обработкой персональных данных</span>
-      </label>
-    </>
+    <label className={styles.label}>
+      <input
+        type="checkbox"
+        name={name}
+        className={styles.input}
+        checked={checked}
+        aria-label={label}
+        required={required}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
+      <span className={styles.box}></span>
+      <span className={styles.caption}>Согласен с обработкой персональных данных</span>
+    </label>
   )
 }

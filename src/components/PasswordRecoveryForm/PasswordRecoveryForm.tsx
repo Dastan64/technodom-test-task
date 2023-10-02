@@ -7,7 +7,11 @@ import { PhoneInput } from '../PhoneInput'
 
 import { variants } from '../../animationData/formAnimation.ts'
 
-export const PasswordRecoveryForm = (): ReactElement => {
+interface PasswordRecoveryFormProps {
+  onFormChange: (step: string) => void
+}
+
+export const PasswordRecoveryForm = ({ onFormChange }: PasswordRecoveryFormProps): ReactElement => {
   const [phone, setPhone] = useState('')
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +23,7 @@ export const PasswordRecoveryForm = (): ReactElement => {
     event.preventDefault()
     alert('SMS с временным паролем было отправлено на указанный номер телефона')
     setPhone('')
+    onFormChange('phoneCheck')
   }
 
   const isButtonEnabled: boolean = phone.length === 16

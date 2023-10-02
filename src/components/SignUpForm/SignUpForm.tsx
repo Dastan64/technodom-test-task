@@ -11,8 +11,13 @@ import { update } from '../../features/registration/registration-slice.ts'
 import { PhoneInput } from '../PhoneInput'
 import { variants } from '../../animationData/formAnimation.ts'
 
-export const SignUpForm = (): ReactElement => {
+interface SignUpFormProps {
+  onFormChange: (step: string) => void
+}
+
+export const SignUpForm = ({ onFormChange }: SignUpFormProps): ReactElement => {
   const userData = useAppSelector((state) => state.registration)
+  const dispatch = useAppDispatch()
 
   const [data, setData] = useState({
     phone: '',
@@ -21,21 +26,55 @@ export const SignUpForm = (): ReactElement => {
     hasAgreed: false,
   })
 
-  const dispatch = useAppDispatch()
+  const [errors, setErrors] = useState({
+    phone: '',
+    name: '',
+    email: '',
+    hasAgreed: '',
+  })
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const value: string | boolean = target.type === 'checkbox' ? target.checked : target.value
+    const { checked, name, type, value } = target
+    let error = ''
+    const fieldValue: string | boolean = type === 'checkbox' ? checked : value
     setData({
       ...data,
-      [target.name]: value,
+      [name]: fieldValue,
+    })
+
+    if (name === 'email') {
+      if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value)) {
+        error = 'Некорректный адрес электронной почты'
+      }
+    }
+    setErrors({
+      ...errors,
+      [name]: error,
     })
   }
 
   const handleBlur = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = target
+    let error = ''
+
+    if (name === 'name') {
+      if (value.length < 3) {
+        error = 'Имя должно состоять более чем из 2 букв'
+      }
+      if (/\d/.test(value)) {
+        error = 'Имя не может содержать цифры'
+      }
+    }
+
+    setErrors({
+      ...errors,
+      [name]: error,
+    })
+
     dispatch(
       update({
-        field: target.name,
-        value: data[target.name as keyof typeof data],
+        field: name,
+        value: data[name as keyof typeof data],
       })
     )
   }
@@ -49,6 +88,7 @@ export const SignUpForm = (): ReactElement => {
       email: '',
       hasAgreed: false,
     })
+    onFormChange('phoneCheck')
   }
 
   const isButtonEnabled: boolean = Object.keys(userData).every((key) => userData[key as keyof typeof userData])
@@ -66,26 +106,32 @@ export const SignUpForm = (): ReactElement => {
           value={data.phone}
           alwaysShowMask
         />
-        <Input
-          label="Введите имя"
-          name="name"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          placeholder="Имя"
-          type="text"
-          value={data.name}
-          required
-        />
-        <Input
-          label="Введите e-mail"
-          name="email"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          placeholder="E-mail"
-          type="email"
-          value={data.email}
-          required
-        />
+        <div className={styles.container}>
+          <Input
+            label="Введите имя"
+            name="name"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            placeholder="Имя"
+            type="text"
+            value={data.name}
+            required
+          />
+          {errors.name && <span className={styles.error}>{errors.name}</span>}
+        </div>
+        <div className={styles.container}>
+          <Input
+            label="Введите e-mail"
+            name="email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            placeholder="E-mail"
+            type="email"
+            value={data.email}
+            required
+          />
+          {errors.email && <span className={styles.error}>{errors.email}</span>}
+        </div>
         <Checkbox
           name="hasAgreed"
           label="Согласен с обработкой персональных данны"

@@ -15,8 +15,8 @@ export const AccessControl = () => {
   return (
     <>
       {currentStep === 'phoneCheck' && <PhoneCheckForm onFormChange={changeCurrentStep} />}
-      {currentStep === 'registration' && <SignUpForm />}
-      {currentStep === 'passwordRecovery' && <PasswordRecoveryForm />}
+      {currentStep === 'registration' && <SignUpForm onFormChange={changeCurrentStep} />}
+      {currentStep === 'passwordRecovery' && <PasswordRecoveryForm onFormChange={changeCurrentStep} />}
     </>
   )
 }
