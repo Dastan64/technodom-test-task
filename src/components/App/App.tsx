@@ -4,7 +4,9 @@ import { AccessControl } from '../AccessControl'
 export const App = () => {
   return (
     <div className={styles.app}>
-      <AccessControl />
+      <main>
+        <AccessControl />
+      </main>
     </div>
   )
 }
